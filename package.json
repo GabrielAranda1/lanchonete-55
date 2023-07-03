@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/main/app.ts",
     "create-migration": "knex migrate:make",
-    "update-migrations": "knex migrate:latest"
+    "update-migrations": "knex migrate:latest",
+    "rollback-migrations": "knex migrate:rollback"
   },
   "keywords": [],
   "author": "Gabriel Aranda",
