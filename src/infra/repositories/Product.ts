@@ -38,11 +38,9 @@ export class ProductRepository implements IProductRepository {
   }
 
   async list(filters: Partial<Product>): Promise<Product[]> {
-    const products = await this.database('products').where({
-      ...filters,
-      created_at: filters.createdAt,
-      updated_at: filters.updatedAt,
-    })
+    const parsedFilters = this.buildFilters(filters)
+
+    const products = await this.database('products').where(parsedFilters)
 
     return products.map(product => new Product({
       createdAt: product.created_at,
@@ -53,5 +51,17 @@ export class ProductRepository implements IProductRepository {
       price: product.price,
       description: product.description,
     }))
+  }
+
+  private buildFilters(filters: Partial<Product>) {
+    const filtersArray = Object.entries(filters)
+
+    const filtersObject: any = {}
+
+    filtersArray.forEach(([key, value]) => {
+      if (value) filtersObject[key] = value
+    })
+
+    return filtersObject
   }
 }
