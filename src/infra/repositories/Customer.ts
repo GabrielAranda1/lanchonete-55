@@ -20,8 +20,40 @@ export class CustomerRepository implements ICustomerRepository {
     return createdCustomer === 0
   }
 
-  async getById(id: string): Promise<Customer> {
+  async getById(id: string): Promise<Customer | null> {
     const customer = await this.database('customers').where('id', id).first()
+
+    if (!customer) return null
+
+    return new Customer({
+      createdAt: customer.created_at,
+      updatedAt: customer.updated_at,
+      id: customer.id,
+      name: customer.name,
+      email: customer.email,
+      documentNumber: customer.document_number
+    })
+  }
+
+  async getByDocumentNumber(email: string): Promise<Customer | null> {
+    const customer = await this.database('customers').where('email', email).first()
+
+    if (!customer) return null
+
+    return new Customer({
+      createdAt: customer.created_at,
+      updatedAt: customer.updated_at,
+      id: customer.id,
+      name: customer.name,
+      email: customer.email,
+      documentNumber: customer.document_number
+    })
+  }
+
+  async getByEmail(documentNumber: string): Promise<Customer | null> {
+    const customer = await this.database('customers').where('document_number', documentNumber).first()
+
+    if (!customer) return null
 
     return new Customer({
       createdAt: customer.created_at,
