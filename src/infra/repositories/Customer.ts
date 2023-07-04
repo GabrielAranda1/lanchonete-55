@@ -8,9 +8,28 @@ export class CustomerRepository implements ICustomerRepository {
   constructor(
     @inject('MySqlDatabase') protected readonly database: Knex
   ) { }
-  async create(customer: Customer): Promise<Customer> {
-    const [createdCustomer] = await this.database('customers').insert(customer).returning('*');
+  async create(customer: Customer): Promise<boolean> {
+    const [createdCustomer] = await this.database('customers')
+      .insert({
+        id: customer.id,
+        name: customer.name,
+        email: customer.email,
+        document_number: customer.documentNumber
+      });
 
-    return createdCustomer as Customer
+    return createdCustomer === 0
+  }
+
+  async getById(id: string): Promise<Customer> {
+    const customer = await this.database('customers').where('id', id).first()
+
+    return new Customer({
+      createdAt: customer.created_at,
+      updatedAt: customer.updated_at,
+      id: customer.id,
+      name: customer.name,
+      email: customer.email,
+      documentNumber: customer.document_number
+    })
   }
 }

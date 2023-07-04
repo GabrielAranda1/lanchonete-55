@@ -1,4 +1,4 @@
-import { injectable } from "tsyringe";
+import { inject, injectable } from "tsyringe";
 import { ICustomerRepository } from "../../ports/repositories/Customer";
 import { ICreateCustomerUseCase } from "./ICreateCustomer";
 import { CreateCustomerDTO } from "./CreateCustomerDTO";
@@ -10,6 +10,7 @@ import { MissingNecessaryDataError } from "../../errors/MissingNecessaryData";
 @injectable()
 export class CreateCustomerUseCase implements ICreateCustomerUseCase {
   constructor(
+    @inject('ICustomerRepository')
     private readonly customerRepository: ICustomerRepository
   ) { }
 
@@ -18,11 +19,15 @@ export class CreateCustomerUseCase implements ICreateCustomerUseCase {
 
     const { name, email, documentNumber } = params
 
-    const customer = new Customer(name, email, documentNumber)
+    const customer = new Customer({ name, email, documentNumber })
+    console.log(customer)
+    const isCreated = await this.customerRepository.create(customer);
 
-    const createdCustomer = await this.customerRepository.create(customer);
+    if (!isCreated) throw new Error('Customer not created')
 
-    return createdCustomer;
+    const createdCostumer = await this.customerRepository.getById(customer.id)
+
+    return createdCostumer;
   }
 
   private validateParams(params: CreateCustomerDTO) {

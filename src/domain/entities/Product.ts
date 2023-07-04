@@ -1,14 +1,17 @@
 import { Entity } from "./Entity";
 
-export class Product extends Entity {
-  constructor(
-    public name: string,
-    public category: Category,
-    public price: number,
-    public description: string,
-  ) {
-    super()
+export class Product extends Entity<Product> {
+  constructor(props: Partial<Product>) {
+    super(props)
   }
+
+  public name: string
+
+  public category: Category
+
+  public price: number
+
+  public description: string
 }
 
 export enum Category {

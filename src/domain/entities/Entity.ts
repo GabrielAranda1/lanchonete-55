@@ -1,14 +1,16 @@
 import { v4 } from "uuid"
 
-export abstract class Entity {
+export abstract class Entity<T> {
   public readonly id: string
   public createdAt: Date
   public updatedAt: Date
 
-  constructor(id?: string) {
-    this.id = id ?? this.generateId()
-    this.createdAt = new Date()
-    this.updatedAt = new Date()
+  constructor(props: Partial<T & Entity<T>>) {
+    Object.assign(this, props);
+
+    this.id = props.id ?? this.generateId()
+    this.createdAt = props.createdAt ?? new Date()
+    this.updatedAt = props.updatedAt ?? new Date()
   }
 
   private generateId(): string {
