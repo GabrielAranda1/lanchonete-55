@@ -4,12 +4,17 @@ import { ICreateCustomerUseCase } from '../domain/usecases/CreateCustomer/ICreat
 import { CreateCustomerController } from '../presentation/controllers/CreateCustomerController'
 import { CustomerRepository } from '../infra/repositories/Customer'
 import { KnexConnection } from '../infra/database/knex'
+import { ProductRepository } from '../infra/repositories/Product'
+import { ICreateProductUseCase } from '../domain/usecases/CreateProduct/ICreateProduct'
+import { CreateProductUseCase } from '../domain/usecases/CreateProduct/CreateProduct'
 
 
 container.registerInstance('MySqlDatabase', new KnexConnection().getConnection())
 
 container.registerSingleton('ICustomerRepository', CustomerRepository)
+container.registerSingleton('IProductRepository', ProductRepository)
 
 container.register<ICreateCustomerUseCase>('ICreateCustomerUseCase', CreateCustomerUseCase)
+container.register<ICreateProductUseCase>('ICreateProductUseCase', CreateProductUseCase)
 
 container.registerSingleton(CreateCustomerController)
