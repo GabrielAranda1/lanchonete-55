@@ -3,10 +3,11 @@
  * @returns { Promise<void> }
  */
 exports.up = function (knex) {
-  return knex.schema.createTable('orders', (table) => {
+  return knex.schema.createTable('order_products', (table) => {
     table.uuid('id').primary()
-    table.string('status').notNullable()
-    table.uuid('customer_id').nullable().references('id').inTable('customers')
+    table.uuid('product_id').notNullable().references('id').inTable('products')
+    table.uuid('order_id').references('id').inTable('orders');
+    table.integer('quantity').notNullable()
     table.timestamp('created_at').defaultTo(knex.fn.now()).notNullable()
     table.timestamp('updated_at').defaultTo(knex.fn.now()).notNullable()
   })
@@ -17,5 +18,5 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-  return knex.schema.dropTable('orders');
+  return knex.schema.dropTable('order_products');
 }
