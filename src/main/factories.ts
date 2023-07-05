@@ -8,13 +8,21 @@ import { ICreateProductUseCase } from '../domain/usecases/CreateProduct/ICreateP
 import { CreateProductUseCase } from '../domain/usecases/CreateProduct/CreateProduct'
 import { IListProductsUseCase } from '../domain/usecases/ListProducts/IListProducts'
 import { ListProductsUseCase } from '../domain/usecases/ListProducts/ListProducts'
+import { OrderRepository } from '../infra/repositories/Order'
+import { ICreateOrderUseCase } from '../domain/usecases/CreateOrder/ICreateOrder'
+import { CreateOrderUseCase } from '../domain/usecases/CreateOrder/CreateOrder'
+import { IGetOrderByIdUseCase } from '../domain/usecases/GetOrderById/IGetOrderById'
+import { GetOrderByIdUseCase } from '../domain/usecases/GetOrderById/GetOrderById'
 
 
 container.registerInstance('MySqlDatabase', new KnexConnection().getConnection())
 
 container.registerSingleton('ICustomerRepository', CustomerRepository)
 container.registerSingleton('IProductRepository', ProductRepository)
+container.registerSingleton('IOrderRepository', OrderRepository)
 
 container.register<ICreateCustomerUseCase>('ICreateCustomerUseCase', CreateCustomerUseCase)
 container.register<ICreateProductUseCase>('ICreateProductUseCase', CreateProductUseCase)
 container.register<IListProductsUseCase>('IListProductsUseCase', ListProductsUseCase)
+container.register<ICreateOrderUseCase>('ICreateOrderUseCase', CreateOrderUseCase)
+container.register<IGetOrderByIdUseCase>('IGetOrderByIdUseCase', GetOrderByIdUseCase)
