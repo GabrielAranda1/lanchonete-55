@@ -2,7 +2,7 @@ import { Knex } from "knex";
 import { inject, injectable } from "tsyringe";
 import { v4 } from "uuid";
 import { Customer } from "../../domain/entities/Customer";
-import { Order, OrderProduct } from "../../domain/entities/Order";
+import { Order, OrderProduct, Status } from "../../domain/entities/Order";
 import { Category } from "../../domain/entities/Product";
 import { IOrderRepository } from "../../domain/ports/repositories/Order";
 
@@ -12,7 +12,6 @@ export class OrderRepository implements IOrderRepository {
     @inject('MySqlDatabase') protected readonly database: Knex
   ) { }
 
-  update: (order: Partial<Order>) => Promise<boolean>;
 
   async create(order: Order): Promise<boolean> {
     const { customer, products, totalPrice } = order
@@ -89,6 +88,12 @@ export class OrderRepository implements IOrderRepository {
         })
       })
     })
+  }
+
+  async updateStatus(id: string, status: Status): Promise<boolean> {
+    const update = await this.database('orders').where('id', id).update({ status })
+
+    return update > 0
   }
 
   async list(filters: Partial<Order>): Promise<Order[]> {
