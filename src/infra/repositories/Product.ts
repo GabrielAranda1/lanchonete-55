@@ -53,6 +53,14 @@ export class ProductRepository implements IProductRepository {
     }))
   }
 
+  async update(product: Partial<Product>): Promise<boolean> {
+    const parsedFilters = this.buildFilters(product)
+
+    const isUpdated = await this.database('products').where('id', product.id).update({ ...parsedFilters, updated_at: new Date() })
+
+    return isUpdated === 1
+  }
+
   private buildFilters(filters: Partial<Product>) {
     const filtersArray = Object.entries(filters)
 

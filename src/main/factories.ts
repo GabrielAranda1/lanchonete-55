@@ -17,6 +17,8 @@ import { IListOrdersUseCase } from '../domain/usecases/ListOrders/IListOrders'
 import { ListOrdersUseCase } from '../domain/usecases/ListOrders/ListOrders'
 import { UpdateOrderStatusUseCase } from '../domain/usecases/UpdateOrderStatus/UpdateOrderStatus'
 import { IUpdateOrderStatusUseCase } from '../domain/usecases/UpdateOrderStatus/IUpdateOrderStatus'
+import { IUpdateProductUseCase } from '../domain/usecases/UpdateProduct/IUpdateProduct'
+import { UpdateProductUseCase } from '../domain/usecases/UpdateProduct/UpdateProduct'
 
 
 container.registerInstance('MySqlDatabase', new KnexConnection().getConnection())
@@ -32,3 +34,4 @@ container.register<ICreateOrderUseCase>('ICreateOrderUseCase', CreateOrderUseCas
 container.register<IGetOrderByIdUseCase>('IGetOrderByIdUseCase', GetOrderByIdUseCase)
 container.register<IListOrdersUseCase>('IListOrdersUseCase', ListOrdersUseCase)
 container.register<IUpdateOrderStatusUseCase>('IUpdateOrderStatusUseCase', UpdateOrderStatusUseCase)
+container.register<IUpdateProductUseCase>('IUpdateProductUseCase', UpdateProductUseCase)
