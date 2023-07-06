@@ -4,6 +4,8 @@
   "description": "",
   "main": "app.ts",
   "scripts": {
+    "build": "rimraf dist && tsc -p .",
+    "start": "node dist/src/main/app.js",
     "dev": "ts-node-dev --respawn --transpile-only --ignore-watch node_modules src/main/app.ts",
     "create-migration": "knex migrate:make",
     "update-migrations": "knex migrate:latest",
@@ -28,6 +30,7 @@
     "knex": "^2.4.2",
     "mysql2": "^3.4.3",
     "reflect-metadata": "^0.1.13",
+    "rimraf": "^5.0.1",
     "tsyringe": "^4.7.0",
     "uuid": "^9.0.0"
   }
