@@ -12,14 +12,17 @@ export class HttpErrorHandler {
       return {
         statusCode: parsedError.statusCode,
         message: parsedError.message,
-        body: parsedError.details || {}
+        body: {
+          details: parsedError.details,
+          //stack: process.env.NODE_ENV !== 'production' ? error.stack : undefined
+        }
       }
     }
 
     return {
       statusCode: 500,
       message: 'Internal server error',
-      body: {}
+      body: { stack: process.env.NODE_ENV !== 'production' ? error.stack : undefined }
     }
   }
 }
