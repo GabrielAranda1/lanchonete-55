@@ -11,7 +11,6 @@ export class OrderRepository implements IOrderRepository {
   constructor(
     @inject('MySqlDatabase') protected readonly database: Knex
   ) { }
-  list: (filters: Partial<Order>) => Promise<Order[]>;
 
   update: (order: Partial<Order>) => Promise<boolean>;
 
@@ -90,5 +89,32 @@ export class OrderRepository implements IOrderRepository {
         })
       })
     })
+  }
+
+  async list(filters: Partial<Order>): Promise<Order[]> {
+    const orders = await this.database('orders').where(this.buildFilters(filters))
+
+    return orders.map(order => new Order({
+      id: order.id,
+      status: order.status,
+      totalPrice: order.total_price,
+      createdAt: order.created_at,
+      updatedAt: order.updated_at,
+      customer: order.customer_id ? new Customer({ id: order.customer_id }) : undefined
+    }))
+  }
+
+  private buildFilters(filters: Partial<Order>) {
+    const filtersArray = Object.entries(filters)
+
+    const filtersObject: any = {}
+
+    filtersArray.forEach(([key, value]) => {
+      if (value && typeof value !== 'object') filtersObject[key] = value
+    })
+
+    if (filters.customer) filtersObject['customer_id'] = filters.customer.id
+
+    return filtersObject
   }
 }

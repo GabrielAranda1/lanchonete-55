@@ -13,6 +13,8 @@ import { ICreateOrderUseCase } from '../domain/usecases/CreateOrder/ICreateOrder
 import { CreateOrderUseCase } from '../domain/usecases/CreateOrder/CreateOrder'
 import { IGetOrderByIdUseCase } from '../domain/usecases/GetOrderById/IGetOrderById'
 import { GetOrderByIdUseCase } from '../domain/usecases/GetOrderById/GetOrderById'
+import { IListOrdersUseCase } from '../domain/usecases/ListOrders/IListOrders'
+import { ListOrdersUseCase } from '../domain/usecases/ListOrders/ListOrders'
 
 
 container.registerInstance('MySqlDatabase', new KnexConnection().getConnection())
@@ -26,3 +28,4 @@ container.register<ICreateProductUseCase>('ICreateProductUseCase', CreateProduct
 container.register<IListProductsUseCase>('IListProductsUseCase', ListProductsUseCase)
 container.register<ICreateOrderUseCase>('ICreateOrderUseCase', CreateOrderUseCase)
 container.register<IGetOrderByIdUseCase>('IGetOrderByIdUseCase', GetOrderByIdUseCase)
+container.register<IListOrdersUseCase>('IListOrdersUseCase', ListOrdersUseCase)
