@@ -1,6 +1,8 @@
-export class MissingEmailError extends Error {
+import { BusinessError, BusinessErrorType } from "./BusinessError"
+
+export class MissingEmailError extends BusinessError {
   constructor(message?: string) {
-    super()
+    super(BusinessErrorType.MissingNecessaryData)
 
     this.name = 'MissingEmailError'
     this.message = message ?? 'Email is required'
