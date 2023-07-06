@@ -15,7 +15,7 @@ export class UpdateOrderStatusUseCase implements IUpdateOrderStatusUseCase {
 
   async update(params: UpdateOrderStatusDTO): Promise<Order> {
     const { orderId, status } = params
-    console.log(params)
+
     const isValidStatus = Object.values(Status).includes(status as Status)
 
     if (!isValidStatus) throw new InvalidParamError('Invalid param: status')

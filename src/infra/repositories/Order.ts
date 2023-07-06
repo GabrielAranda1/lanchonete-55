@@ -91,13 +91,13 @@ export class OrderRepository implements IOrderRepository {
   }
 
   async updateStatus(id: string, status: Status): Promise<boolean> {
-    const update = await this.database('orders').where('id', id).update({ status })
+    const update = await this.database('orders').where('id', id).update({ status, updated_at: new Date() })
 
     return update > 0
   }
 
   async list(filters: Partial<Order>): Promise<Order[]> {
-    const orders = await this.database('orders').where(this.buildFilters(filters))
+    const orders = await this.database('orders').where(this.buildFilters(filters)).orderBy('created_at', 'desc')
 
     return orders.map(order => new Order({
       id: order.id,
