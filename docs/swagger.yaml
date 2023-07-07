@@ -1,0 +1,107 @@
+openapi: "3.0.2"
+info:
+  version: 1.0.0
+  title: Lanchonete 55
+  description: >
+    ** Trabalho de Pós Graduação da FIAP, que consiste em uma lanchonete onde é possível cadastrar, produtos, clientes e realizar pedidos**
+paths:
+  /customers:
+    post:
+      tags:
+        - Customers
+      summary: Cria um cliente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CustomerToCreateSchema"
+            examples:
+              Example1:
+                value:
+                  name: "Gabriel"
+                  documentNumber: "16349914007"
+                  email: "gabriel@email.com"
+      responses:
+        200:
+          description: Cliente registrado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatedCustomerSchema"
+        400:
+          $ref: "#/components/responses/BadRequest"
+        500:
+          $ref: "#/components/responses/InternalServerError"
+components:
+  schemas:
+    CreatedCustomerSchema:
+      type: object
+      description: Propriedades para se criar um cliente.
+      properties:
+        id:
+          type: string
+          description: Id do cliente.
+        documentNumber:
+          type: string
+          description: Numero do CPF da pessoal.
+        name:
+          type: string
+          description: Nome da pessoa.
+        email:
+          type: string
+          description: Email da pessoa.
+        createdAt:
+          type: string
+          format: date-time
+          description: Data de criação do cliente.
+        updatedAt:
+          type: string
+          format: date-time
+          description: Data de atualização do cliente.
+    CustomerToCreateSchema:
+      type: object
+      description: Propriedades para se criar um cliente.
+      properties:
+        documentNumber:
+          type: string
+          description: Numero do CPF da pessoal.
+        name:
+          type: string
+          description: Nome da pessoa.
+        email:
+          type: string
+          description: Email da pessoa.
+  responses:
+    BadRequest:
+      description: Invalid Request
+      content:
+        "application/json":
+          schema:
+            properties:
+              data:
+                type: object
+                properties:
+                  stack:
+                    type: string
+              message:
+                type: string
+                title: Error message
+                description: Describes a message informing a reason for the error
+                example: "Email required"
+    InternalServerError:
+      description: Internal server error
+      content:
+        "application/json":
+          schema:
+            properties:
+              data:
+                type: object
+                properties:
+                  stack:
+                    type: string
+              message:
+                type: string
+                title: Error message
+                description: Describes a message informing a reason for the error
+                example: "Internal Server Error"
