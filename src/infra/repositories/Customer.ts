@@ -35,7 +35,7 @@ export class CustomerRepository implements ICustomerRepository {
     })
   }
 
-  async getByDocumentNumber(email: string): Promise<Customer | null> {
+  async getByEmail(email: string): Promise<Customer | null> {
     const customer = await this.database('customers').where('email', email).first()
 
     if (!customer) return null
@@ -49,8 +49,8 @@ export class CustomerRepository implements ICustomerRepository {
       documentNumber: customer.document_number
     })
   }
-
-  async getByEmail(documentNumber: string): Promise<Customer | null> {
+  
+  async getByDocumentNumber(documentNumber: string): Promise<Customer | null> {
     const customer = await this.database('customers').where('document_number', documentNumber).first()
 
     if (!customer) return null
