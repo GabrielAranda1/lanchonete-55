@@ -28,3 +28,7 @@ $ npm install
 # development
 $ npm run dev
 ```
+
+## DOCS
+
+After app starts running, go to [http://localhost:3000/doc](http://localhost:3000/doc) to check the swagger doc.
