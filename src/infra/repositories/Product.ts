@@ -37,6 +37,20 @@ export class ProductRepository implements IProductRepository {
     })
   }
 
+  async getByIds(ids: string[]): Promise<Product[]> {
+    const products = await this.database('products').whereIn('id', ids)
+
+    return products.map(product => new Product({
+      createdAt: product.created_at,
+      updatedAt: product.updated_at,
+      id: product.id,
+      name: product.name,
+      category: product.category,
+      price: product.price,
+      description: product.description,
+    }))
+  }
+
   async list(filters: Partial<Product>): Promise<Product[]> {
     const parsedFilters = this.buildFilters(filters)
 
