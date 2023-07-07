@@ -1,25 +1,7 @@
 import { container } from 'tsyringe'
-import { CreateCustomerUseCase } from '../domain/usecases/CreateCustomer/CreateCustomer'
-import { ICreateCustomerUseCase } from '../domain/usecases/CreateCustomer/ICreateCustomer'
-import { CustomerRepository } from '../infra/repositories/Customer'
+import { CreateCustomerUseCase, CreateOrderUseCase, CreateProductUseCase, GetOrderByIdUseCase, ICreateCustomerUseCase, ICreateOrderUseCase, ICreateProductUseCase, IGetOrderByIdUseCase, IListOrdersUseCase, IListProductsUseCase, IUpdateOrderStatusUseCase, IUpdateProductUseCase, ListOrdersUseCase, ListProductsUseCase, UpdateOrderStatusUseCase, UpdateProductUseCase } from '../domain/usecases'
 import { KnexConnection } from '../infra/database/knex'
-import { ProductRepository } from '../infra/repositories/Product'
-import { ICreateProductUseCase } from '../domain/usecases/CreateProduct/ICreateProduct'
-import { CreateProductUseCase } from '../domain/usecases/CreateProduct/CreateProduct'
-import { IListProductsUseCase } from '../domain/usecases/ListProducts/IListProducts'
-import { ListProductsUseCase } from '../domain/usecases/ListProducts/ListProducts'
-import { OrderRepository } from '../infra/repositories/Order'
-import { ICreateOrderUseCase } from '../domain/usecases/CreateOrder/ICreateOrder'
-import { CreateOrderUseCase } from '../domain/usecases/CreateOrder/CreateOrder'
-import { IGetOrderByIdUseCase } from '../domain/usecases/GetOrderById/IGetOrderById'
-import { GetOrderByIdUseCase } from '../domain/usecases/GetOrderById/GetOrderById'
-import { IListOrdersUseCase } from '../domain/usecases/ListOrders/IListOrders'
-import { ListOrdersUseCase } from '../domain/usecases/ListOrders/ListOrders'
-import { UpdateOrderStatusUseCase } from '../domain/usecases/UpdateOrderStatus/UpdateOrderStatus'
-import { IUpdateOrderStatusUseCase } from '../domain/usecases/UpdateOrderStatus/IUpdateOrderStatus'
-import { IUpdateProductUseCase } from '../domain/usecases/UpdateProduct/IUpdateProduct'
-import { UpdateProductUseCase } from '../domain/usecases/UpdateProduct/UpdateProduct'
-
+import { CustomerRepository, OrderRepository, ProductRepository } from '../infra/repositories'
 
 container.registerInstance('MySqlDatabase', new KnexConnection().getConnection())
 
