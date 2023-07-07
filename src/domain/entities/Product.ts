@@ -12,6 +12,8 @@ export class Product extends Entity<Product> {
   public price: number
 
   public description: string
+
+  public imageLink: string
 }
 
 export enum Category {
