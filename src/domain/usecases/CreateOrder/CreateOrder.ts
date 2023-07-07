@@ -24,7 +24,8 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     const calculatedTotalPrice = products.reduce((acc, product) => acc + product.price * product.quantity, 0)
 
     this.validateProductsParams(products)
-    this.validateProductExist(products)
+    
+    await this.validateProductExist(products)
 
     const parsedProducts = products.map(product => new OrderProduct({ id: product.id, price: product.price, quantity: product.quantity }))
 
