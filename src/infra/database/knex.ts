@@ -7,7 +7,7 @@ export class KnexConnection {
 
   getConnection(): Knex {
     const connection = knex(knexconfig)
-    console.log(process.env)
+
     this.knexInstance = connection;
 
     this.isConnectionAlive();
