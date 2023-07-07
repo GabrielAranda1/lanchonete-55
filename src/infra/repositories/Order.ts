@@ -50,6 +50,8 @@ export class OrderRepository implements IOrderRepository {
 
     const order = await this.database('orders').where('orders.id', orderId).first()
 
+    if (!order) return null
+
     if (order.customer_id) {
       customer = await this.database('customers').where('customers.id', order.customer_id).first()
     }
@@ -58,8 +60,6 @@ export class OrderRepository implements IOrderRepository {
       .where('order_products.order_id', orderId)
       .join('products', 'products.id', '=', 'order_products.product_id')
       .select('products.*', 'order_products.quantity')
-
-    if (!order) return null
 
     return new Order({
       id: order.id,
