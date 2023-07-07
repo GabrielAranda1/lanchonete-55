@@ -3,12 +3,16 @@ FROM node:20-alpine3.18
 WORKDIR /app
 
 COPY package*.json ./
+COPY ./src ./src
+COPY ./knexfile.js ./knexfile.js
+COPY ./tsconfig.json ./tsconfig.json
+COPY ./migrations ./migrations
+COPY ./.env ./.env
 
 RUN npm install
 
-COPY . .
-
 RUN npm run build
+
 
 EXPOSE 3000
 

@@ -1,13 +1,5 @@
 version: '3.3'
 services:
-  server:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - 3000:3000
-    depends_on:
-      - db
   db:
     container_name: mysql8
     image: mysql:8.0
@@ -23,3 +15,13 @@ services:
       - './docker/db/data:/var/lib/mysql'
       - './docker/db/my.cnf:/etc/mysql/conf.d/my.cnf'
       - './docker/db/sql:/docker-entrypoint-initdb.d'
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DB_HOST=db
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
