@@ -22,7 +22,7 @@ export class CreateCustomerUseCase implements ICreateCustomerUseCase {
 
     const customer = new Customer({ name, email, documentNumber })
 
-    this.checkIfCustomerAlreadyExists(customer)
+    await this.checkIfCustomerAlreadyExists(customer)
 
     const isCreated = await this.customerRepository.create(customer);
 
