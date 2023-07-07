@@ -8,6 +8,7 @@ import { Order, OrderProduct, Status } from "../../entities/Order";
 import { Customer } from "../../entities/Customer";
 import { IProductRepository } from "../../ports/repositories/Product";
 import { NotFoundError } from "../../errors/NotFoundError";
+import { ICustomerRepository } from "../../ports/repositories/Customer";
 
 @injectable()
 export class CreateOrderUseCase implements ICreateOrderUseCase {
@@ -15,7 +16,9 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     @inject('IOrderRepository')
     private readonly orderRepository: IOrderRepository,
     @inject('IProductRepository')
-    private readonly productRepository: IProductRepository
+    private readonly productRepository: IProductRepository,
+    @inject('ICustomerRepository')
+    private readonly customerRepository: ICustomerRepository
   ) { }
 
   async create(params: CreateOrderDTO): Promise<Order> {
@@ -26,6 +29,9 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     this.validateProductsParams(products)
     
     await this.validateProductExist(products)
+
+    if(customerId)
+      await this.validateCustomerExist(customerId)
 
     const parsedProducts = products.map(product => new OrderProduct({ id: product.id, price: product.price, quantity: product.quantity }))
 
@@ -59,5 +65,11 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     const foundProducts = await this.productRepository.getByIds(productIds)
 
     if(products.length !== foundProducts.length) throw new NotFoundError('Products not found')
+  }
+
+  private async validateCustomerExist(customerId: string){
+    const foundCustomer = await this.customerRepository.getById(customerId)
+    
+    if(!foundCustomer) throw new NotFoundError('Customer not found')
   }
 }
