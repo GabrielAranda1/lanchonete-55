@@ -1,6 +1,8 @@
 ## Installation
 
-The only command need is the following:
+### Create .env from .sample
+- Copy .env.sample and rename it to .env
+
 ### Up containers
 
 ```bash
