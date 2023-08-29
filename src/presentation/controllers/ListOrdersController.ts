@@ -12,9 +12,9 @@ export class ListOrdersController implements IController {
     readonly listOrdersUseCase: IListOrdersUseCase
   ) { }
   async handle(httpRequest: IHttpRequest): Promise<IHttpResponse> {
-    const { status, customerId } = httpRequest.query
+    const { status, customerId, done } = httpRequest.query
 
-    const result = await this.listOrdersUseCase.list({ status, customerId })
+    const result = await this.listOrdersUseCase.list({ status, customerId, done })
 
     return ok(result)
   }
