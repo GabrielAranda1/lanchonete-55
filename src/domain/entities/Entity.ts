@@ -9,8 +9,11 @@ export abstract class Entity<T> {
     Object.assign(this, props);
 
     this.id = props.id ?? this.generateId()
-    this.createdAt = props.createdAt ?? new Date()
-    this.updatedAt = props.updatedAt ?? new Date()
+
+    if(!props.id) {
+      this.createdAt = props.createdAt ?? new Date()
+      this.updatedAt = props.updatedAt ?? new Date()
+    }
   }
 
   private generateId(): string {
