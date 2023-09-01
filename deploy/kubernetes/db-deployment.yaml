@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-lanchonete-55
+  labels:
+    app: db-lanchonete-55
+spec:
+  template:
+    metadata:
+      name: db-lanchonete-55
+      labels:
+        app: db-lanchonete-55
+    spec:
+      containers:
+        - name: db-lanchonete-55-container
+          image: mysql:8.0
+          ports:
+            - containerPort: 3306
+          resources:
+            limits:
+              cpu: 1
+              memory: 1Gi
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "root"
+            - name: MYSQL_DATABASE
+              value: "lanchonete-55"
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: MYSQL_PASSWORD
+              value: "root"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-lanchonete-55
