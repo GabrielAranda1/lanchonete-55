@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: api-lanchonete-55-container
-          image: gabrielaranda/lanchonete-55-api:latest
+          image: gabrielaranda/lanchonete-55-api:kubernetes-config
           ports:
             - containerPort: 3000
           resources:
@@ -22,7 +22,7 @@ spec:
               memory: 1Gi
           env:
             - name: DB_HOST
-              value: "localhost"
+              value: "db-lanchonete-55-service"
             - name: DB_USERNAME
               value: "root"
             - name: DB_PASSWORD
@@ -30,7 +30,7 @@ spec:
             - name: DB_DATABASE
               value: "lanchonete-55"
             - name: DB_PORT
-              value: "30000"
+              value: "3306"
   replicas: 1
   selector:
     matchLabels:
