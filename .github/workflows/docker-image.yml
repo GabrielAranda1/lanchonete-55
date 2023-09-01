@@ -11,15 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag lanchonete-55-api:$(date +%s)
+
+    - name: Get branch name
+      shell: bash
+      id: get_branch_name
+      run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
     - name: Login to DockerHub
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag lanchonete-55-api:${{ env.BRANCH_NAME }}
+
 
     - name: Push the Docker image
-      run: docker push ${{secrets.DOCKER_USERNAME}}/lanchonete-55-api:$(date +%s)
+      run: docker push ${{secrets.DOCKER_USERNAME}}/lanchonete-55-api:${{ env.BRANCH_NAME }}
