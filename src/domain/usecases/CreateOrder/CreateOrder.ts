@@ -39,7 +39,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
       customer: customerId ? new Customer({ id: customerId }) : undefined,
       products: parsedProducts,
       totalPrice: calculatedTotalPrice,
-      status: Status.RECEIVED
+      status: Status.WAITINGPAYMENT
     })
 
     const isCreated = await this.orderRepository.create(order);
