@@ -32,10 +32,13 @@ export class ListOrdersUseCase implements IListOrdersUseCase {
   private sortOrders(orders: Order[]): Order[] {  
     return orders.sort((a, b) => {
       const order = {
-        [Status.READY]: 1,
-        [Status.PREPARING]: 2,
-        [Status.RECEIVED]: 3,
-        [Status.DONE]: 4,
+        [Status.WAITINGPAYMENT]: 1,
+        [Status.PAYMENTPROBLEM]: 2,
+        [Status.SUCCESSFULPAYMENT]: 3,
+        [Status.READY]: 4,
+        [Status.PREPARING]: 5,
+        [Status.RECEIVED]: 6,
+        [Status.DONE]: 7,
       }
       
       return order[a.status] - order[b.status]
