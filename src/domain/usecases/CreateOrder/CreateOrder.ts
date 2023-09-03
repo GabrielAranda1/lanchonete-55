@@ -50,7 +50,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
 
     if (!isCreated) throw new Error('Order not created')
 
-    this.createPayment(order.id)
+    await this.createPayment(order.id)
 
     const createdProduct = await this.orderRepository.getById(order.id)
 
@@ -66,7 +66,7 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     const isCreated = await this.paymentRepository.create(payment);
 
     if (!isCreated){
-      this.orderRepository.updateStatus(orderId, Status.PAYMENTPROBLEM)
+      await this.orderRepository.updateStatus(orderId, Status.PAYMENTPROBLEM)
 
       throw new Error('Payment not created')
     } 
