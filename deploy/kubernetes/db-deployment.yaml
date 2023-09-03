@@ -16,6 +16,9 @@ spec:
           image: mysql:8.0
           ports:
             - containerPort: 3306
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
           resources:
             limits:
               cpu: 1
@@ -23,6 +26,10 @@ spec:
           envFrom:
             - secretRef:
                 name: db-lanchonete-55-secrets
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: pvc-db-lanchonete-55
   replicas: 1
   selector:
     matchLabels:
