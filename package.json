@@ -10,7 +10,8 @@
     "lint": "eslint --fix ./src/**",
     "create-migration": "knex migrate:make",
     "update-migrations": "knex migrate:latest",
-    "rollback-migrations": "knex migrate:rollback"
+    "rollback-migrations": "knex migrate:rollback",
+    "config-k8s": "./k8s-config.sh"
   },
   "keywords": [],
   "author": "",
