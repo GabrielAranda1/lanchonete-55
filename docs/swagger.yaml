@@ -320,6 +320,52 @@ paths:
           $ref: "#/components/responses/NotFound"
         500:
           $ref: "#/components/responses/InternalServerError"
+    patch:
+      tags:
+        - Payments
+      summary: Atualiza o status do pagamento
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Id do pagamento
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  description: Status do pagamento para atualização.
+                  enum:
+                    - RECEIVED
+                    - PAID
+                    - NOTPAID
+            examples:
+              Example1:
+                value:
+                  status: "PAID"
+      responses:
+        200:
+          description: Pagamento atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                properties:
+                  data:
+                    $ref: "#/components/schemas/PaymentSchema"
+                  message:
+                    type: string
+                    description: Mensagem de sucesso.
+        400:
+          $ref: "#/components/responses/BadRequest"
+        404:
+          $ref: "#/components/responses/NotFound"
+        500:
+          $ref: "#/components/responses/InternalServerError"
 components:
   schemas:
     CreatedCustomerSchema:
