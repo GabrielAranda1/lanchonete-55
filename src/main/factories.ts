@@ -4,6 +4,8 @@ import { KnexConnection } from '../infra/database/knex'
 import { CustomerRepository, OrderRepository, PaymentRepository, ProductRepository } from '../infra/repositories'
 import { IGetPaymentByOrderIdUseCase } from '../domain/usecases/GetPaymentByOrderId/IGetPaymentByOrderId'
 import { GetPaymentByOrderIdUseCase } from '../domain/usecases/GetPaymentByOrderId/GetPaymentByOrderId'
+import { IUpdatePaymentStatusUseCase } from '../domain/usecases/UpdatePaymentStatus/IUpdatePaymentStatus'
+import { UpdatePaymentStatusUseCase } from '../domain/usecases/UpdatePaymentStatus/UpdatePaymentStatus'
 
 container.registerInstance('MySqlDatabase', new KnexConnection().getConnection())
 
@@ -21,3 +23,4 @@ container.register<IGetPaymentByOrderIdUseCase>('IGetPaymentByOrderIdUseCase', G
 container.register<IListOrdersUseCase>('IListOrdersUseCase', ListOrdersUseCase)
 container.register<IUpdateOrderStatusUseCase>('IUpdateOrderStatusUseCase', UpdateOrderStatusUseCase)
 container.register<IUpdateProductUseCase>('IUpdateProductUseCase', UpdateProductUseCase)
+container.register<IUpdatePaymentStatusUseCase>('IUpdatePaymentStatusUseCase', UpdatePaymentStatusUseCase)
