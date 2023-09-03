@@ -20,15 +20,9 @@ spec:
             limits:
               cpu: 1
               memory: 1Gi
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: "root"
-            - name: MYSQL_DATABASE
-              value: "lanchonete-55"
-            - name: MYSQL_ALLOW_EMPTY_PASSWORD
-              value: "yes"
-            - name: MYSQL_PASSWORD
-              value: "root"
+          envFrom:
+            - secretRef:
+                name: db-lanchonete-55-secrets
   replicas: 1
   selector:
     matchLabels:

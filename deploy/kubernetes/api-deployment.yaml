@@ -20,19 +20,9 @@ spec:
             limits:
               cpu: 1
               memory: 1Gi
-          env:
-            - name: DB_HOST
-              value: "db-lanchonete-55-service"
-            - name: DB_USERNAME
-              value: "root"
-            - name: DB_PASSWORD
-              value: "root"
-            - name: DB_DATABASE
-              value: "lanchonete-55"
-            - name: DB_PORT
-              value: "3306"
-            - name: PORT
-              value: "3000"
+          envFrom:
+            - secretRef:
+                name: api-lanchonete-55-secrets
   replicas: 1
   selector:
     matchLabels:
