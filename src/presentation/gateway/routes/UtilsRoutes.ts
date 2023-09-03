@@ -11,7 +11,7 @@ const swaggerContent = readFileSync(swaggerPath, 'utf8')
 
 const swaggerDocument = yaml.parse(swaggerContent)
 
-utilRoutes.use('/doc', swaggerUi.serve);
-utilRoutes.get('/doc', swaggerUi.setup(swaggerDocument));
+utilRoutes.use('/doc', swaggerUi.serve)
+utilRoutes.get('/doc', swaggerUi.setup(swaggerDocument))
 
 export { utilRoutes }
