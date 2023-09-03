@@ -2,8 +2,6 @@ import { container } from 'tsyringe'
 import { CreateCustomerUseCase, CreateOrderUseCase, CreateProductUseCase, GetOrderByIdUseCase, ICreateCustomerUseCase, ICreateOrderUseCase, ICreateProductUseCase, IGetOrderByIdUseCase, IListOrdersUseCase, IListProductsUseCase, IUpdateOrderStatusUseCase, IUpdateProductUseCase, ListOrdersUseCase, ListProductsUseCase, UpdateOrderStatusUseCase, UpdateProductUseCase } from '../domain/usecases'
 import { KnexConnection } from '../infra/database/knex'
 import { CustomerRepository, OrderRepository, PaymentRepository, ProductRepository } from '../infra/repositories'
-import { CreatePaymentUseCase } from '../domain/usecases/CreatePayment/CreatePayment'
-import { ICreatePaymentUseCase } from '../domain/usecases/CreatePayment/ICreatePayment'
 import { IGetPaymentByOrderIdUseCase } from '../domain/usecases/GetPaymentByOrderId/IGetPaymentByOrderId'
 import { GetPaymentByOrderIdUseCase } from '../domain/usecases/GetPaymentByOrderId/GetPaymentByOrderId'
 
@@ -23,4 +21,3 @@ container.register<IGetPaymentByOrderIdUseCase>('IGetPaymentByOrderIdUseCase', G
 container.register<IListOrdersUseCase>('IListOrdersUseCase', ListOrdersUseCase)
 container.register<IUpdateOrderStatusUseCase>('IUpdateOrderStatusUseCase', UpdateOrderStatusUseCase)
 container.register<IUpdateProductUseCase>('IUpdateProductUseCase', UpdateProductUseCase)
-container.register<ICreatePaymentUseCase>('ICreatePaymentUseCase', CreatePaymentUseCase)

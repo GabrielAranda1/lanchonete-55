@@ -9,6 +9,8 @@ import { Customer } from "../../entities/Customer";
 import { IProductRepository } from "../../ports/repositories/Product";
 import { NotFoundError } from "../../errors/NotFoundError";
 import { ICustomerRepository } from "../../ports/repositories/Customer";
+import * as Payment from "../../entities/Payment";
+import { IPaymentRepository } from "../../ports/repositories/Payment";
 
 @injectable()
 export class CreateOrderUseCase implements ICreateOrderUseCase {
@@ -18,7 +20,9 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
     @inject('IProductRepository')
     private readonly productRepository: IProductRepository,
     @inject('ICustomerRepository')
-    private readonly customerRepository: ICustomerRepository
+    private readonly customerRepository: ICustomerRepository,
+    @inject('IPaymentRepository')
+    private readonly paymentRepository: IPaymentRepository,
   ) { }
 
   async create(params: CreateOrderDTO): Promise<Order> {
@@ -46,9 +50,26 @@ export class CreateOrderUseCase implements ICreateOrderUseCase {
 
     if (!isCreated) throw new Error('Order not created')
 
+    this.createPayment(order.id)
+
     const createdProduct = await this.orderRepository.getById(order.id)
 
     return createdProduct!;
+  }
+
+  private async createPayment(orderId: string) {
+    const payment = new Payment.Payment({
+        orderId: orderId,
+        status: Payment.Status.RECEIVED
+    })
+
+    const isCreated = await this.paymentRepository.create(payment);
+
+    if (!isCreated){
+      this.orderRepository.updateStatus(orderId, Status.PAYMENTPROBLEM)
+
+      throw new Error('Payment not created')
+    } 
   }
 
   private validateProductsParams(products: CreateOrderDTO['products']) {
