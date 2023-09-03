@@ -13,5 +13,5 @@ export class Payment extends Entity<Payment> {
 export enum Status {
     RECEIVED = 'RECEIVED',
     PAID = 'PAID',
-    NOTPAID = 'NOTPAID'
+    NOTPAID = 'NOT_PAID'
 }
