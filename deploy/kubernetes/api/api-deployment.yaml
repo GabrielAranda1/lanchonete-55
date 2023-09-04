@@ -11,6 +11,13 @@ spec:
       labels:
         app: api-lanchonete-55
     spec:
+      initContainers:
+        - name: migration-container
+          image: gabrielaranda/lanchonete-55-api:latest
+          command: ["npm", "run", "update-migrations"]
+          envFrom:
+            - secretRef:
+                name: api-lanchonete-55-secrets
       containers:
         - name: api-lanchonete-55-container
           image: gabrielaranda/lanchonete-55-api:latest
