@@ -45,4 +45,4 @@ $ npm run config-k8s
 ```
 ## DOCS
 
-After app starts running, go to [http://localhost:3000/doc](http://localhost:3000/doc) to check the swagger doc.
+You can see the swagger documentation [here](docs/swagger.yaml) and if you'd like you can import the insomnia file in the same folder on insomnia to have a complete list of the endpoints
