@@ -69,5 +69,5 @@ jobs:
         host: ${{ secrets.EC2_PUBLIC_IP }}
         username: ubuntu
         key: ${{ secrets.PRIVATE_KEY }}
-        script: docker run -d -p 443:443 ${{ secrets.EC2_PUBLIC_IP }}:${{ env.BRANCH_NAME }}
+        script: docker run -d -p 443:443 ${{ secrets.ECR_URI }}:${{ env.BRANCH_NAME }}
       if: github.ref == 'refs/heads/main'
