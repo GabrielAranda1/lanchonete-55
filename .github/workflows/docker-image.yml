@@ -23,7 +23,7 @@ jobs:
     #     aws-region: "us-east-1"
     
     - name: Build Docker image
-      run: docker build -t lanchonete-55:${{ env.BRANCH_NAME }} .
+      run: docker build -t ${{ secrets.ECR_URI }}:${{ env.BRANCH_NAME }} .
 
     - name: Login to AWS ECR and push Docker image
       if: github.ref == 'refs/heads/main'
@@ -32,7 +32,42 @@ jobs:
         aws configure set aws_secret_access_key ${{ secrets.AWS_ACCESS_KEY }}
         aws configure set default.region us-east-1
         
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_URI }}
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
         
-        docker tag lanchonete-55:${{ env.BRANCH_NAME }} ${{ env.ECR_URI }}/${{ env.BRANCH_NAME }}
-        docker push ${{ env.ECR_URI }}/${{ env.BRANCH_NAME }}
+        docker push ${{ secrets.ECR_URI }}:${{ env.BRANCH_NAME }}
+  
+  deploy-to-ec2:
+    needs: build-image
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Get branch name
+      shell: bash
+      id: get_branch_name
+      run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+
+    - name: Configure AWS credentials
+      run: |
+        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws configure set aws_secret_access_key ${{ secrets.AWS_ACCESS_KEY }}
+        aws configure set default.region us-east-1
+
+    - name: Pull Docker image from ECR
+      run: |
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
+
+        docker pull ${{ secrets.ECR_URI }}:${{ env.BRANCH_NAME }}
+
+        echo "ECR image pulled successfully"
+      if: github.ref == 'refs/heads/main'
+
+    - name: Run Docker container on EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_PUBLIC_IP }}
+        username: ubuntu
+        key: ${{ secrets.PRIVATE_KEY }}
+        script: docker run -d -p 443:443 ${{ secrets.EC2_PUBLIC_IP }}:${{ env.BRANCH_NAME }}
+      if: github.ref == 'refs/heads/main'
