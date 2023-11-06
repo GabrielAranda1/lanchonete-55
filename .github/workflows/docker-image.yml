@@ -72,3 +72,13 @@ jobs:
             --name lanchonete-55 \
             ${{ secrets.ECR_URI }}:${{ env.BRANCH_NAME }}
       if: github.ref == 'refs/heads/main'
+
+    - name: Run Database Migrations
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_PUBLIC_IP }}
+        username: ubuntu
+        key: ${{ secrets.PRIVATE_KEY }}
+        script: |
+          docker exec -it lanchonete-55 npm run update-migrations
+      if: github.ref == 'refs/heads/main'
