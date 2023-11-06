@@ -41,21 +41,6 @@ jobs:
       id: get_branch_name
       run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
-    - name: Configure AWS credentials
-      run: |
-        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws configure set aws_secret_access_key ${{ secrets.AWS_ACCESS_KEY }}
-        aws configure set default.region us-east-1
-
-    - name: Pull Docker image from ECR
-      run: |
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
-
-        docker pull ${{ secrets.ECR_URI }}:${{ env.BRANCH_NAME }}
-
-        echo "ECR image pulled successfully"
-      if: github.ref == 'refs/heads/main'
-
     - name: Stop and remove all Docker containers and images
       uses: appleboy/ssh-action@master
       with:
@@ -75,6 +60,8 @@ jobs:
         username: ubuntu
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
+          docker pull ${{ secrets.ECR_URI }}:${{ env.BRANCH_NAME }}
           docker run -d -p 443:443 \
             -e DB_HOST=${{ secrets.DB_HOST }} \
             -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
