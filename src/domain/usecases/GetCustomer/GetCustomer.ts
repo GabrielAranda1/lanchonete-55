@@ -3,19 +3,19 @@ import { ICustomerRepository } from "../../ports/repositories/Customer";
 import { Customer } from "../../entities/Customer";
 import { MissingEmailError } from "../../errors/MissingEmail";
 import { MissingNameError } from "../../errors/MissingName";
-import { MissingNecessaryDataError } from "../../errors/MissingNecessaryData";
-import { IAuthenticateCustomerUseCase } from "./IAuthenticateCustomer";
-import { AuthenticateCustomerDTO } from "./AuthenticateCustomerDTO";
+import { IGetCustomerUseCase } from "./IGetCustomer";
+import { GetCustomerDTO } from "./GetCustomerDTO";
 import { CustomerNotExistsError } from "../../errors/CustomerNotExists";
 
 @injectable()
-export class AuthenticateCustomerUseCase implements IAuthenticateCustomerUseCase {
+export class GetCustomerUseCase implements IGetCustomerUseCase {
   constructor(
     @inject('ICustomerRepository')
     private readonly customerRepository: ICustomerRepository
   ) { }
 
-  async get(params: AuthenticateCustomerDTO): Promise<Customer | null> {
+  async get(params: GetCustomerDTO): Promise<Customer | undefined> {
+    console.log(params)
     this.validateParams(params)
 
     const { name, email, documentNumber } = params
@@ -25,11 +25,11 @@ export class AuthenticateCustomerUseCase implements IAuthenticateCustomerUseCase
       return await this.checkIfCustomerExists(customer)
     }
     else{
-      return null
+      return undefined
     }
   }
 
-  private validateParams(params: AuthenticateCustomerDTO) {
+  private validateParams(params: GetCustomerDTO) {
     if (params.name && !params.email) throw new MissingEmailError()
 
     if (params.email && !params.name) throw new MissingNameError()
