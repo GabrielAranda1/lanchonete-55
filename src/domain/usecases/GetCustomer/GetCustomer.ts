@@ -15,7 +15,6 @@ export class GetCustomerUseCase implements IGetCustomerUseCase {
   ) { }
 
   async get(params: GetCustomerDTO): Promise<Customer | undefined> {
-    console.log(params)
     this.validateParams(params)
 
     const { name, email, documentNumber } = params
