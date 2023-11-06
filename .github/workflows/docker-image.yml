@@ -14,13 +14,6 @@ jobs:
       shell: bash
       id: get_branch_name
       run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-
-    # - name: Configure AWS credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws-secret-access-key: ${{ secrets.AWS_ACCESS_KEY }}
-    #     aws-region: "us-east-1"
     
     - name: Build Docker image
       run: docker build -t ${{ secrets.ECR_URI }}:${{ env.BRANCH_NAME }} .
@@ -69,5 +62,13 @@ jobs:
         host: ${{ secrets.EC2_PUBLIC_IP }}
         username: ubuntu
         key: ${{ secrets.PRIVATE_KEY }}
-        script: docker run -d -p 443:443 ${{ secrets.ECR_URI }}:${{ env.BRANCH_NAME }}
+        script: |
+          docker run -d -p 443:443 \
+            -e DB_HOST=${{ secrets.DB_HOST }} \
+            -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
+            -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+            -e DB_DATABASE=${{ secrets.DB_DATABASE }} \
+            -e DB_PORT=${{ secrets.DB_PORT }} \
+            -e PORT=${{ secrets.API_PORT }} \
+            ${{ secrets.ECR_URI }}:${{ env.BRANCH_NAME }}
       if: github.ref == 'refs/heads/main'
