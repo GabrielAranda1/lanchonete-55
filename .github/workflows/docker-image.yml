@@ -80,5 +80,5 @@ jobs:
         username: ubuntu
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
-          docker exec -it lanchonete-55 npm run update-migrations
+          docker exec lanchonete-55 npm run update-migrations
       if: github.ref == 'refs/heads/main'
