@@ -56,18 +56,16 @@ jobs:
         echo "ECR image pulled successfully"
       if: github.ref == 'refs/heads/main'
 
-    - name: Stop and remove existing Docker container
+    - name: Stop and remove all Docker containers and images
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_PUBLIC_IP }}
         username: ubuntu
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
-          CONTAINER_ID=$(docker ps -q -f "name=lanchonete-55")
-          if [ -n "$CONTAINER_ID" ]; then
-            docker stop $CONTAINER_ID
-            docker rm $CONTAINER_ID
-          fi
+          docker stop $(docker ps -q)
+          docker rm $(docker ps -aq)
+          docker image prune -af
       if: github.ref == 'refs/heads/main'
 
     - name: Run Docker container on EC2
