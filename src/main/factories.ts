@@ -6,6 +6,8 @@ import { IGetPaymentByOrderIdUseCase } from '../domain/usecases/GetPaymentByOrde
 import { GetPaymentByOrderIdUseCase } from '../domain/usecases/GetPaymentByOrderId/GetPaymentByOrderId'
 import { IUpdatePaymentStatusUseCase } from '../domain/usecases/UpdatePaymentStatus/IUpdatePaymentStatus'
 import { UpdatePaymentStatusUseCase } from '../domain/usecases/UpdatePaymentStatus/UpdatePaymentStatus'
+import { IGetCustomerUseCase } from '../domain/usecases/GetCustomer/IGetCustomer'
+import { GetCustomerUseCase } from '../domain/usecases/GetCustomer/GetCustomer'
 
 container.registerInstance('MySqlDatabase', new KnexConnection().getConnection())
 
@@ -15,6 +17,7 @@ container.registerSingleton('IOrderRepository', OrderRepository)
 container.registerSingleton('IPaymentRepository', PaymentRepository)
 
 container.register<ICreateCustomerUseCase>('ICreateCustomerUseCase', CreateCustomerUseCase)
+container.register<IGetCustomerUseCase>('IGetCustomerUseCase', GetCustomerUseCase)
 container.register<ICreateProductUseCase>('ICreateProductUseCase', CreateProductUseCase)
 container.register<IListProductsUseCase>('IListProductsUseCase', ListProductsUseCase)
 container.register<ICreateOrderUseCase>('ICreateOrderUseCase', CreateOrderUseCase)
