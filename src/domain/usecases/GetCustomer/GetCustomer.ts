@@ -3,6 +3,7 @@ import { ICustomerRepository } from "../../ports/repositories/Customer";
 import { Customer } from "../../entities/Customer";
 import { MissingEmailError } from "../../errors/MissingEmail";
 import { MissingNameError } from "../../errors/MissingName";
+import { MissingNecessaryDataError } from "../../errors/MissingNecessaryData"
 import { IGetCustomerUseCase } from "./IGetCustomer";
 import { GetCustomerDTO } from "./GetCustomerDTO";
 import { CustomerNotExistsError } from "../../errors/CustomerNotExists";
@@ -29,6 +30,8 @@ export class GetCustomerUseCase implements IGetCustomerUseCase {
   }
 
   private validateParams(params: GetCustomerDTO) {
+    if (!params.name && !params.email && !params.documentNumber) throw new MissingNecessaryDataError()
+
     if (params.name && !params.email) throw new MissingEmailError()
 
     if (params.email && !params.name) throw new MissingNameError()
